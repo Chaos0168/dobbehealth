@@ -4,6 +4,28 @@ A full-stack AI application built for the **Full-Stack Developer Intern Assignme
 
 ---
 
+## Screenshots
+
+### Login / Register
+![Register Page](screenshots/register.png)
+
+### Patient — Appointment Booking
+![Patient Chat — Booking](screenshots/patient%20book%20.png)
+
+### Email Confirmation
+![Email Confirmation](screenshots/email.png)
+
+### Google Calendar Event
+![Google Calendar](screenshots/gcalendar.png)
+
+### Doctor — Summary Report Dashboard
+![Doctor Dashboard — Report](screenshots/docdashboard.png)
+
+### Slack Notification
+![Slack Notification](screenshots/slack.png)
+
+---
+
 ## Assignment Coverage
 
 | Requirement | Status |
