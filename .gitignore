@@ -1,0 +1,36 @@
+# Python
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+.Python
+
+# Environment — never commit secrets
+backend/.env
+.env
+.env.*
+!.env.example
+
+# Google OAuth — contains real credentials
+backend/services/google_token.json
+backend/services/google_credentials.json
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+
+# Docker volumes
+postgres_data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo

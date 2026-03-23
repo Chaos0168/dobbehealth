@@ -1,0 +1,81 @@
+services:
+  # ─── PostgreSQL Database ───────────────────────────────────────────────────
+  postgres:
+    image: postgres:15
+    container_name: dobbe-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: dobbeai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02_seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d dobbeai"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ─── pgAdmin (visual DB viewer) ───────────────────────────────────────────
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: dobbe-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@dobbe.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+  # ─── MCP Server (port 8001) ───────────────────────────────────────────────
+  mcp:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dobbe-mcp
+    command: python -m mcp_server.server
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./backend/.env
+    environment:
+      # Override DB URL to use docker service name "postgres" instead of localhost
+      DATABASE_URL: postgresql+asyncpg://admin:admin123@postgres:5432/dobbeai
+      MCP_SERVER_URL: http://mcp:8001/sse
+    volumes:
+      # Mount google credentials/token if they exist
+      - ./backend/services:/app/services
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ─── FastAPI Backend (port 8000) ──────────────────────────────────────────
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dobbe-api
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://admin:admin123@postgres:5432/dobbeai
+      MCP_SERVER_URL: http://mcp:8001/sse
+    volumes:
+      - ./backend/services:/app/services
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mcp:
+        condition: service_started
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
