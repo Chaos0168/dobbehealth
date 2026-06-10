@@ -64,7 +64,7 @@ export default function Login() {
         <div style={styles.hint}>
           <p style={{ margin: 0, fontSize: 12, color: "#6b7280" }}>Demo accounts:</p>
           <p style={{ margin: "4px 0 0", fontSize: 12, color: "#374151" }}>
-            Patient: <code>tript@patient.com</code> / <code>password123</code>
+            Patient: <code>yakshika@patient.com</code> / <code>password123</code>
           </p>
           <p style={{ margin: "2px 0 0", fontSize: 12, color: "#374151" }}>
             Doctor: <code>dr.ahuja@hospital.com</code> / <code>password123</code>

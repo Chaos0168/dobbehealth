@@ -237,7 +237,7 @@ All protected endpoints require `Authorization: Bearer <token>` header.
 
 ## Sample Prompts
 
-### Patient — login: `tript@patient.com` / `password123`
+### Patient — login: `yakshika@patient.com` / `password123`
 ```
 "Show me all available doctors"
 "Check Dr. Ahuja's availability for tomorrow"

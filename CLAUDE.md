@@ -53,7 +53,7 @@ npm run lint      # eslint
 ```
 
 ### Sample logins (seeded via database/seed.sql)
-- Patient: `tript@patient.com` / `password123`
+- Patient: `yakshika@patient.com` / `password123`
 - Doctor: `dr.ahuja@hospital.com` / `password123`
 
 ## Architecture

@@ -2,8 +2,8 @@
 -- Password hash = bcrypt("password123")
 
 INSERT INTO users (name, email, password_hash, role, phone) VALUES
-  ('Tript Sachdeva', 'tript@patient.com', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TiGniVqnL5a9l5.K/fjE8opXQkNe', 'patient', '+91-9999999999'),
-  ('Dr. Ahuja', 'dr.ahuja@hospital.com', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TiGniVqnL5a9l5.K/fjE8opXQkNe', 'doctor', '+91-8888888888')
+  ('Yakshika Batra', 'yakshika@patient.com', '$2b$12$.lHjbJRjBUK7jM4xyJv3VuH1/oGbXuYK6feuRXESabH75afgqK7.6', 'patient', '+91-9999999999'),
+  ('Dr. Ahuja', 'dr.ahuja@hospital.com', '$2b$12$.lHjbJRjBUK7jM4xyJv3VuH1/oGbXuYK6feuRXESabH75afgqK7.6', 'doctor', '+91-8888888888')
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO doctors (user_id, specialization)

@@ -40,7 +40,7 @@ export default function Register() {
         <form onSubmit={submit} style={styles.form}>
           <label style={styles.label}>Full Name</label>
           <input name="name" value={form.name} onChange={handle} style={styles.input}
-            placeholder="Tript Sachdeva" required />
+            placeholder="Yakshika Batra" required />
 
           <label style={styles.label}>Email</label>
           <input name="email" type="email" value={form.email} onChange={handle}
