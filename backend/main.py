@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from routes import auth, chat, doctor
+from config import settings
 
 
 # ── Lifespan: runs on startup and shutdown ─────────────────────────────────────
@@ -31,7 +32,7 @@ app = FastAPI(
 # ── CORS — allows the React frontend (localhost:3000) to talk to this backend ──
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],   # React dev server
+    allow_origins=[o.strip() for o in settings.frontend_origins.split(",")],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

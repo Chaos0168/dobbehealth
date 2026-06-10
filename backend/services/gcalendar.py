@@ -4,12 +4,25 @@ Creates/deletes calendar events when appointments are booked/cancelled.
 """
 import os
 import json
+import base64
 from datetime import datetime
 from typing import Optional
 
 _BASE = os.path.dirname(os.path.abspath(__file__))
 CREDENTIALS_PATH = os.getenv("GOOGLE_CREDENTIALS_PATH", os.path.join(_BASE, "google_credentials.json"))
 TOKEN_PATH = os.getenv("GOOGLE_TOKEN_PATH", os.path.join(_BASE, "google_token.json"))
+
+
+def _write_file_from_b64_env(env_var: str, path: str) -> None:
+    """On hosts with no persistent disk, restore credential files from base64 env vars."""
+    if os.path.exists(path):
+        return
+    encoded = os.getenv(env_var)
+    if not encoded:
+        return
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "wb") as f:
+        f.write(base64.b64decode(encoded))
 
 
 def _get_service():
@@ -20,6 +33,9 @@ def _get_service():
 
     SCOPES = ["https://www.googleapis.com/auth/calendar"]
     creds = None
+
+    _write_file_from_b64_env("GOOGLE_TOKEN_JSON_B64", TOKEN_PATH)
+    _write_file_from_b64_env("GOOGLE_CREDENTIALS_JSON_B64", CREDENTIALS_PATH)
 
     if os.path.exists(TOKEN_PATH):
         creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)

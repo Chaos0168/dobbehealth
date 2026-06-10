@@ -1,9 +1,20 @@
+from pydantic import field_validator
 from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
     # Database
     database_url: str
+
+    @field_validator("database_url")
+    @classmethod
+    def _use_asyncpg_driver(cls, v: str) -> str:
+        # Railway/Render provide postgres:// or postgresql:// — SQLAlchemy async needs +asyncpg
+        if v.startswith("postgres://"):
+            return v.replace("postgres://", "postgresql+asyncpg://", 1)
+        if v.startswith("postgresql://"):
+            return v.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return v
 
     # JWT
     jwt_secret_key: str
@@ -25,6 +36,9 @@ class Settings(BaseSettings):
     # Slack
     slack_bot_token: str
     slack_channel_id: str = "#doctor-notifications"
+
+    # CORS — comma-separated list of allowed frontend origins
+    frontend_origins: str = "http://localhost:3000,http://localhost:5173"
 
     class Config:
         env_file = ".env"

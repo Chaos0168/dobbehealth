@@ -21,7 +21,9 @@ from mcp_server.tools import availability, booking, stats, email_tool, slack_too
 
 # ── Create the MCP server instance ────────────────────────────────────────────
 # This name appears when the client calls initialize()
-mcp = FastMCP("dobbe-mcp-server", host="0.0.0.0", port=8001)
+# PORT is set by hosting platforms (e.g. Railway); falls back to 8001 locally
+MCP_PORT = int(os.getenv("PORT", os.getenv("MCP_PORT", "8001")))
+mcp = FastMCP("dobbe-mcp-server", host="0.0.0.0", port=MCP_PORT)
 
 # ── Register all tools — each module adds its tools to this instance ──────────
 # The LLM will discover ALL of these dynamically via tools/list
@@ -34,6 +36,6 @@ reschedule.register(mcp)
 
 
 if __name__ == "__main__":
-    # Runs as SSE server — the agent connects via HTTP to http://localhost:8001/sse
-    print("🔌 MCP Server starting on http://localhost:8001")
+    # Runs as SSE server — the agent connects via HTTP to http://localhost:<port>/sse
+    print(f"🔌 MCP Server starting on http://0.0.0.0:{MCP_PORT}")
     mcp.run(transport="sse")
